@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj137snbpvsrj"]
+
+[ext_resource type="Script" path="res://source/world/world.gd" id="1_do87a"]
+[ext_resource type="Script" path="res://source/world/terrain.gd" id="2_s0vxb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4otq1"]
+
+[sub_resource type="Sky" id="Sky_lormx"]
+sky_material = SubResource("ProceduralSkyMaterial_4otq1")
+
+[sub_resource type="Environment" id="Environment_lpwmq"]
+background_mode = 2
+sky = SubResource("Sky_lormx")
+ambient_light_energy = 7.76
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_do87a")
+
+[node name="terrain" type="MeshInstance3D" parent="."]
+script = ExtResource("2_s0vxb")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.874941, 0.484229, 0, -0.484229, 0.874941, 53.1517, 31.3542, 112.565)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lpwmq")
