@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bgy0dbdo4ujtg" path="res://scene/player/player.tscn" id="5_jldec"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5vg2m"]
-load_path = "res://.godot/imported/grass'.jpg-d548e2dfceb22660de89a87faaf304ba.s3tc.ctex"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2h3f"]
 albedo_texture = ExtResource("2_td46r")
@@ -23,10 +22,6 @@ background_mode = 2
 sky = SubResource("Sky_wjt57")
 ambient_light_source = 3
 tonemap_mode = 3
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 fog_enabled = true
 fog_light_color = Color(0.133333, 0.133333, 0.133333, 1)

@@ -1,11 +1,53 @@
 extends Node
 
+# Basic settings here 
+const DEFAULT_PORT = 7000
+var address = "localhost"
+enum TYPES {CLIENT, SERVER}
+var type
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+#var peer
+
+# Begin the mulitplayer.
+func start_multiplayer(t: int):
+	type = t
+	if t == TYPES.CLIENT:
+		bootstrap_client()
+	if t == TYPES.SERVER:
+		bootstrap_server()
+	
+func bootstrap_client():
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_client(address, DEFAULT_PORT)
+	multiplayer.multiplayer_peer = peer
+	peer.peer_connected.connect(_client_recieved_new_client)
+	
+	print("Client running...")
+
+func bootstrap_server():
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_server(DEFAULT_PORT, 16)
+	multiplayer.multiplayer_peer = peer
+	peer.peer_connected.connect(_server_recieved_new_client)
+	
+	print("Server running...")
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+
+
+
+# ANY CLIENT TO ANY CLIENT FUNCTIONS ARE HERE
+func _client_recieved_new_client(id):
+	print("We are a client and we just got a new client")
+
+
+
+# CLIENT TO SERVER FUNCTIONS ARE HERE
+
+
+
+
+
+# CLIENT TO SERVER ENET SIGNALS ARE HERE
+func _server_recieved_new_client(id):
+	print("We are a server and we just got a client")

@@ -20,14 +20,12 @@ func generate_terrain() -> void:
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var xm = 200 * 3 
-	var zm = 200 * 3
 	var c = 0 
 
 	# Build terrain to specification
 	# This will be refactored later
-	for x in xm:
-		for z in zm:
+	for x in Data.TERRAIN_SIZE:
+		for z in Data.TERRAIN_SIZE:
 			# Get noise data 
 			var diff = 5
 			var n1a = noise.get_noise_2d(x,-z) * diff

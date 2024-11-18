@@ -4,3 +4,5 @@
 
 [node name="Main" type="Node"]
 script = ExtResource("1_1kdvy")
+
+[node name="game" type="Node" parent="."]

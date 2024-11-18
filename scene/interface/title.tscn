@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://d32jn6o55p4q0"]
+[gd_scene load_steps=3 format=3 uid="uid://d32jn6o55p4q0"]
 
 [ext_resource type="Theme" uid="uid://dv2xu5bjyupg5" path="res://content/theme/base.tres" id="1_uma0p"]
+[ext_resource type="Script" path="res://source/interface/title.gd" id="2_ee6t0"]
 
 [node name="Title" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_uma0p")
+script = ExtResource("2_ee6t0")
 
 [node name="label" type="Label" parent="."]
 layout_mode = 1
@@ -20,30 +22,6 @@ offset_bottom = 48.0
 theme_override_font_sizes/font_size = 32
 text = "BR3ACH_RAZ0R"
 
-[node name="Button" type="Button" parent="label"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = 32.0
-offset_right = 80.0
-offset_bottom = 48.0
-grow_vertical = 0
-text = "JOIN"
-alignment = 0
-
-[node name="Button2" type="Button" parent="label"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = 58.0
-offset_right = 80.0
-offset_bottom = 74.0
-grow_vertical = 0
-text = "HOST"
-alignment = 0
-
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -51,3 +29,32 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="join" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -400.0
+offset_right = 88.0
+offset_bottom = -384.0
+grow_vertical = 0
+text = "JOIN"
+alignment = 0
+
+[node name="host" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -374.0
+offset_right = 88.0
+offset_bottom = -358.0
+grow_vertical = 0
+text = "HOST"
+alignment = 0
+
+[connection signal="pressed" from="join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="host" to="." method="_on_host_pressed"]
