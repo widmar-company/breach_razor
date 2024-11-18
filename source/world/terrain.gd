@@ -1,54 +1,97 @@
 extends MeshInstance3D
 
-# Declare variables for terrain settings
-var terrain_size = Vector2(100, 100)  # Size of the terrain grid
-var terrain_scale = 10.0  # Scaling factor for height
-var noise_scale = 0.05  # Scale of the noise input
-var noise_offset = Vector3.ZERO  # Offset for noise sampling
-
-# Initialize FastNoiseLite
-var noise = FastNoiseLite.new()
-
 func _ready():
-	# Set noise parameters
-	noise.noise_type = FastNoiseLite.NoiseType.TYPE_SIMPLEX
-	noise.frequency = noise_scale
-	noise.seed = randi()  # Randomize the seed
-	
-	# Create terrain mesh
-	var surface_tool = SurfaceTool.new()
-	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	generate_terrain(surface_tool)
-	
-	# Commit to mesh instance
+	generate_terrain()
+	#debug_tri()
 
-func generate_terrain(surface_tool: SurfaceTool) -> void:
-	# Generate vertices based on noise values
-	for x in range(terrain_size.x):
-		for z in range(terrain_size.y):
-			var x_pos = float(x)
-			var z_pos = float(z)
+
+func generate_terrain() -> void:
+	
+	var noise = FastNoiseLite.new()
+	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
+	noise.frequency = 0.03
+	noise.seed = OS.get_static_memory_usage()
+	
+	var verts = PackedVector3Array()
+	var uvs   = PackedVector2Array()
+	var norms = PackedVector3Array()
+	var armsh = ArrayMesh.new() 
+	
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var xm = 200 * 3 
+	var zm = 200 * 3
+	var c = 0 
+
+	# Build terrain to specification
+	# This will be refactored later
+	for x in xm:
+		for z in zm:
+			# Get noise data 
+			var diff = 5
+			var n1a = noise.get_noise_2d(x,-z) * diff
+			var n1b = noise.get_noise_2d(x,-z-1) * diff
+			var n1c = noise.get_noise_2d(x+1,-z-1) * diff
 			
-			# Sample noise to get height for the current vertex
-			var noise_value = noise.get_noise_2d(x_pos + noise_offset.x, z_pos + noise_offset.z)
-			var y_pos = noise_value * terrain_scale  # Scale the height
-
-			# Add vertex to SurfaceTool
-			surface_tool.add_vertex(Vector3(x_pos, y_pos, z_pos))
-
-	# Connect vertices to form a grid of triangles
-	for x in range(terrain_size.x - 1):
-		for z in range(terrain_size.y - 1):
-			var i = x * terrain_size.y + z  # Vertex index for the grid
-			# Create two triangles for each quad on the grid
-			surface_tool.add_index(i)
-			surface_tool.add_index(i + 1)
-			surface_tool.add_index(i + terrain_size.y)
+			var n2a = noise.get_noise_2d(x,-z) * diff
+			var n2b = noise.get_noise_2d(x+1,-z-1) * diff
+			var n2c = noise.get_noise_2d(x+1,-z) * diff
 			
-			surface_tool.add_index(i + 1)
-			surface_tool.add_index(i + terrain_size.y + 1)
-			surface_tool.add_index(i + terrain_size.y)
+			# Generate our quad
+			# Triangle 1
+			verts.push_back(Vector3(x,   n1a, -z))
+			verts.push_back(Vector3(x,   n1b, -z-1))
+			verts.push_back(Vector3(x+1, n1c, -z-1))
+			
+			# Triangle 2 
+			verts.push_back(Vector3(x,   n2a, -z))
+			verts.push_back(Vector3(x+1, n2b, -z-1))
+			verts.push_back(Vector3(x+1, n2c, -z))
+			
+			c += 1
+	print("Placed ", c, " verts.")
+		
+	for v in verts: 
+		st.set_uv(Vector2(v.x,v.z))
+		#st.set_normal(Vector3(0,1,0))
+		st.add_vertex(v)
+		
+	st.generate_normals()
+	st.generate_tangents()
+	mesh = st.commit()
+	var cs = CollisionShape3D.new()
+	cs.shape = mesh.create_trimesh_shape()
+	#cs.scale = 2
+	$body.add_child(cs)
+	#var cs = mesh.create_convex_shape()
+	#if $CollisionShape3D.shape != null: 
+		#print("Created collision shape: ", $CollisionShape3D.shape)
+		
 	
-	# Optionally, calculate normals and UVs if needed
-	surface_tool.generate_normals()
-	mesh = surface_tool.commit()
+# Refactor this later
+func build_quad() -> void:
+	pass 
+	
+	
+func debug_tri() -> void:
+	var st = SurfaceTool.new()
+
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+	# Prepare attributes for add_vertex.
+	st.set_normal(Vector3(0, 0, 1))
+	st.set_uv(Vector2(0, 0))
+	# Call last for each vertex, adds the above attributes.
+	st.add_vertex(Vector3(-1, -1, 0))
+
+	st.set_normal(Vector3(0, 0, 1))
+	st.set_uv(Vector2(0, 1))
+	st.add_vertex(Vector3(-1, 1, 0))
+
+	st.set_normal(Vector3(0, 0, 1))
+	st.set_uv(Vector2(1, 1))
+	st.add_vertex(Vector3(1, 1, 0))
+
+	# Commit to a mesh.
+	mesh = st.commit()

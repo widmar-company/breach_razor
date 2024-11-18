@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="breach_razor"
+run/main_scene="res://scene/base/main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -18,3 +19,19 @@ config/icon="res://icon.svg"
 
 Peer="*res://source/base/peer.gd"
 Data="*res://source/base/data.gd"
+
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=480
+window/stretch/mode="viewport"
+window/stretch/aspect="ignore"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+textures/decals/filter=0
+textures/light_projectors/filter=0
+environment/defaults/default_clear_color=Color(0.0849067, 0.0576, 0.16, 1)
+occlusion_culling/use_occlusion_culling=true
