@@ -61,5 +61,5 @@ environment = SubResource("Environment_lpwmq")
 visible = false
 texture = SubResource("NoiseTexture2D_mfbrq")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="entity_synchros" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../entity")

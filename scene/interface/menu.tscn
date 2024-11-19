@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://d32jn6o55p4q0"]
 
 [ext_resource type="Theme" uid="uid://dv2xu5bjyupg5" path="res://content/theme/base.tres" id="1_uma0p"]
-[ext_resource type="Script" path="res://source/interface/title.gd" id="2_ee6t0"]
+[ext_resource type="Script" path="res://source/interface/menu.gd" id="2_ee6t0"]
 
-[node name="Title" type="Control"]
+[node name="Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,10 +15,14 @@ script = ExtResource("2_ee6t0")
 
 [node name="label" type="Label" parent="."]
 layout_mode = 1
-offset_left = 8.0
-offset_top = 16.0
-offset_right = 392.0
-offset_bottom = 48.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -192.0
+offset_top = 32.0
+offset_right = 192.0
+offset_bottom = 64.0
+grow_horizontal = 2
 theme_override_font_sizes/font_size = 32
 text = "BR3ACH_RAZ0R"
 
@@ -35,26 +39,42 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
+offset_left = 128.0
 offset_top = -400.0
-offset_right = 88.0
+offset_right = 208.0
 offset_bottom = -384.0
 grow_vertical = 0
 text = "JOIN"
 alignment = 0
+
+[node name="LineEdit" type="LineEdit" parent="join"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 9.0
+offset_top = -8.0
+offset_right = 89.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 2
+placeholder_text = "address"
 
 [node name="host" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
+offset_left = 128.0
 offset_top = -374.0
-offset_right = 88.0
+offset_right = 208.0
 offset_bottom = -358.0
 grow_vertical = 0
 text = "HOST"
 alignment = 0
 
 [connection signal="pressed" from="join" to="." method="_on_join_pressed"]
+[connection signal="text_changed" from="join/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="host" to="." method="_on_host_pressed"]

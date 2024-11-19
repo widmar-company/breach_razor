@@ -1,11 +1,19 @@
 extends CharacterBody3D
 
 
-const SPEED = 5.0
+const SPEED = 10.0
 const JUMP_VELOCITY = 4.5
+
+var m_id
+
 func _ready() -> void:
-	pass
-	
+	set_multiplayer_authority(m_id)
+
+func _process(delta):
+	Data.player_data["position"] = position
+	#$interface/debug/pos.text = String(str(position.x) + " " + str(position.y) + " " + str(position.z))
+
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -28,12 +36,6 @@ func _physics_process(delta: float) -> void:
 	
 	#move_and_collide(velocity)
 	move_and_slide()
-
-func _process(delta: float) -> void:
-	pass
-	# Debug things here
-	#$interface/debug/pos.text=
-	#print(position)
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouse and not Data.mouse_free: 

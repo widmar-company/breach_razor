@@ -17,3 +17,7 @@ func _on_join_pressed() -> void:
 
 func _on_host_pressed() -> void:
 	Peer.start_multiplayer(Peer.TYPES.SERVER)
+
+
+func _on_line_edit_text_changed(new_text):
+	Peer.address = new_text

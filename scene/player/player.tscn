@@ -1,16 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bgy0dbdo4ujtg"]
+[gd_scene load_steps=5 format=3 uid="uid://bgy0dbdo4ujtg"]
 
 [ext_resource type="Script" path="res://source/player/player.gd" id="1_k0du0"]
-[ext_resource type="Theme" uid="uid://dv2xu5bjyupg5" path="res://content/theme/base.tres" id="2_t4nkb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jexu4"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_twiek"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_up85a"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_td38h"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_up85a"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_k0du0")
@@ -18,35 +17,13 @@ script = ExtResource("1_k0du0")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 keep_aspect = 0
+fov = 120.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_jexu4")
 
-[node name="interface" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = -1.0
-offset_right = 1.0
-offset_bottom = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_t4nkb")
-
-[node name="debug" type="VBoxContainer" parent="interface"]
-visible = false
-layout_mode = 1
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="pos" type="Label" parent="interface/debug"]
-layout_mode = 2
-text = "this is a test "
-
-[node name="synchros" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_twiek")
-
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("CylinderMesh_up85a")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_td38h")
