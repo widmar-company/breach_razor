@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dj137snbpvsrj"]
+[gd_scene load_steps=11 format=3 uid="uid://dj137snbpvsrj"]
 
 [ext_resource type="Script" path="res://source/world/world.gd" id="1_do87a"]
 [ext_resource type="Script" path="res://source/world/terrain.gd" id="2_s0vxb"]
 [ext_resource type="Texture2D" uid="uid://r7aykmuhw6j3" path="res://content/world/terrain/coarse_gravel.png" id="2_td46r"]
-[ext_resource type="PackedScene" uid="uid://bgy0dbdo4ujtg" path="res://scene/player/player.tscn" id="5_jldec"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5vg2m"]
 
@@ -39,6 +38,8 @@ noise = SubResource("FastNoiseLite_4f5ou")
 [node name="World" type="Node3D"]
 script = ExtResource("1_do87a")
 
+[node name="entity" type="Node" parent="."]
+
 [node name="terrain" type="MeshInstance3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_s2h3f")
@@ -60,5 +61,5 @@ environment = SubResource("Environment_lpwmq")
 visible = false
 texture = SubResource("NoiseTexture2D_mfbrq")
 
-[node name="Player" parent="." instance=ExtResource("5_jldec")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 20, -173)
+[node name="entity_synchros" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../entity")

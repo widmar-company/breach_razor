@@ -1,10 +1,5 @@
 extends MeshInstance3D
 
-func _ready():
-	generate_terrain()
-	#debug_tri()
-
-
 func generate_terrain() -> void:
 	
 	var noise = FastNoiseLite.new()
@@ -13,12 +8,7 @@ func generate_terrain() -> void:
 	noise.seed = OS.get_static_memory_usage()
 	
 	var verts = PackedVector3Array()
-	var uvs   = PackedVector2Array()
-	var norms = PackedVector3Array()
-	var armsh = ArrayMesh.new() 
-	
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+
 	
 	var c = 0 
 
@@ -50,13 +40,20 @@ func generate_terrain() -> void:
 			c += 1
 	print("Placed ", c, " verts.")
 		
-	for v in verts: 
-		st.set_uv(Vector2(v.x,v.z))
-		#st.set_normal(Vector3(0,1,0))
-		st.add_vertex(v)
+	Data.terrain_verts = verts
 		
+# Apply a surface to our terrain.
+func apply_terrain(verts: PackedVector3Array):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	for v in verts:
+		st.set_uv(Vector2(v.x, v.z))
+		st.add_vertex(v)
+	
 	st.generate_normals()
 	st.generate_tangents()
+	
 	mesh = st.commit()
 	var cs = CollisionShape3D.new()
 	cs.shape = mesh.create_trimesh_shape()
@@ -65,8 +62,7 @@ func generate_terrain() -> void:
 	#var cs = mesh.create_convex_shape()
 	#if $CollisionShape3D.shape != null: 
 		#print("Created collision shape: ", $CollisionShape3D.shape)
-		
-	
+
 # Refactor this later
 func build_quad() -> void:
 	pass 

@@ -1,7 +1,10 @@
 extends Node
 
 var mouse_free: bool = true
+
+# Terrain variables
 const TERRAIN_SIZE = 75
+var terrain_verts: PackedVector3Array
 
 # Handle game states
 var state_changed: bool 
