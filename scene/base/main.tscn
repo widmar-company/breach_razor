@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c3kvyhmp7ky6c"]
+[gd_scene load_steps=8 format=3 uid="uid://c3kvyhmp7ky6c"]
 
 [ext_resource type="Script" path="res://source/base/main.gd" id="1_1kdvy"]
 [ext_resource type="PackedScene" uid="uid://d32jn6o55p4q0" path="res://scene/interface/menu.tscn" id="2_4x75t"]
 [ext_resource type="PackedScene" uid="uid://dj137snbpvsrj" path="res://scene/world/world.tscn" id="2_5plhr"]
+[ext_resource type="Script" path="res://source/interface/interface.gd" id="3_ok7w3"]
 [ext_resource type="PackedScene" uid="uid://yrh34pnegjc" path="res://scene/interface/inventory.tscn" id="4_hw2ee"]
 [ext_resource type="PackedScene" uid="uid://dtlx5tvfn4ws6" path="res://scene/interface/overlay.tscn" id="5_2xpmm"]
 [ext_resource type="Theme" uid="uid://dv2xu5bjyupg5" path="res://content/theme/base.tres" id="5_f4iyb"]
@@ -15,6 +16,7 @@ script = ExtResource("1_1kdvy")
 [node name="World" parent="game" instance=ExtResource("2_5plhr")]
 
 [node name="interface" type="Node" parent="."]
+script = ExtResource("3_ok7w3")
 
 [node name="Inventory" parent="interface" instance=ExtResource("4_hw2ee")]
 

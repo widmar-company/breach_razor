@@ -1,8 +1,12 @@
 extends CharacterBody3D
 
+# Our own player data that we save
+var player_data: Dictionary
 
-const SPEED = 10.0
-const JUMP_VELOCITY = 4.5
+var SPEED = 8.0
+var MAX_SPEED = 50.0
+const JUMP_VELOCITY = 12.0
+var drag: float = 0.1
 
 var m_id
 
@@ -10,29 +14,61 @@ func _ready() -> void:
 	set_multiplayer_authority(m_id)
 
 func _process(delta):
-	Data.player_data["position"] = position
-	#$interface/debug/pos.text = String(str(position.x) + " " + str(position.y) + " " + str(position.z))
-
+	player_data["position"] = position
 
 func _physics_process(delta: float) -> void:
+	var friction = 0.25
+
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept"):
-		velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("razor_jump") and is_on_floor():
+		velocity.y = JUMP_VELOCITY + (abs(velocity.x) + abs(velocity.z) * 0.005)
+		velocity.x = velocity.x * 1.50
+		velocity.z = velocity.z * 1.50
 
+	var magnitude = SPEED
+
+	# Handle specials
+	if Input.is_action_pressed("razor_sprint"):
+		magnitude = SPEED * 1.5
+	if Input.is_action_pressed("razor_crouch"):
+		if is_on_floor():
+			friction = drag + 0.05
+			magnitude = (SPEED / 4)
+			if abs(velocity.x) + abs(velocity.z) > 10 and is_on_floor():
+				magnitude = SPEED * 4
+
+	if abs(velocity.x) > 5 or abs(velocity.z):
+		drag = clampf(drag - (abs(velocity.x + velocity.z) / 10000), 0.01, 1)
+		friction = friction / 4
+
+	else:
+		drag = lerpf(drag, 0.1, 0.01)
+
+	print(drag, " ", friction)
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir := Input.get_vector("razor_strafe_left", "razor_strafe_right", "razor_forward", "razor_backward")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+
 	if direction and !Data.mouse_free:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		if is_on_floor():
+			velocity.x = lerpf(velocity.x, direction.x * magnitude, friction)
+			velocity.z = lerpf(velocity.z, direction.z * magnitude, friction)
+		else:
+			velocity.x = lerpf(velocity.x, direction.x * magnitude, drag)
+			velocity.z = lerpf(velocity.z, direction.z * magnitude, drag)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		if is_on_floor():
+			velocity.x = lerpf(velocity.x, 0.0, friction)
+			velocity.z = lerpf(velocity.z, 0.0, friction)
+		else:
+			velocity.x = lerpf(velocity.x, 0.0, drag)
+			velocity.z = lerpf(velocity.z, 0.0, drag)
 	
 	#move_and_collide(velocity)
 	move_and_slide()

@@ -38,7 +38,9 @@ noise = SubResource("FastNoiseLite_4f5ou")
 [node name="World" type="Node3D"]
 script = ExtResource("1_do87a")
 
-[node name="entity" type="Node" parent="."]
+[node name="actor" type="Node" parent="."]
+
+[node name="player" type="Node" parent="."]
 
 [node name="terrain" type="MeshInstance3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
@@ -62,4 +64,4 @@ visible = false
 texture = SubResource("NoiseTexture2D_mfbrq")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../entity")
+spawn_path = NodePath("../actor")

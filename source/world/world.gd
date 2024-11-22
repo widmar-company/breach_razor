@@ -30,5 +30,5 @@ func _spawn_player(id):
 	var p = ResourceLoader.load("res://scene/player/player.tscn").instantiate()
 	p.name = str(id)
 	p.m_id = id
-	p.position = Vector3(randi_range(25,50), 10, randi_range(-25,-50))
-	$entity.add_child(p)
+	p.position = Vector3(randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4), 10, -randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4))
+	$player.add_child(p)

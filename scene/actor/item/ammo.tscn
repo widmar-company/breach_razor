@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ca7a2kc1c5hlp"]
+
+[ext_resource type="Script" path="res://source/class/item.gd" id="1_ddg7i"]
+
+[node name="Ammo" type="Node3D"]
+script = ExtResource("1_ddg7i")
+item_type = 2

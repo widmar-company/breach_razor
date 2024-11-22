@@ -3,7 +3,7 @@ extends Node
 var mouse_free: bool = true
 
 # Terrain variables
-const TERRAIN_SIZE = 75
+const TERRAIN_SIZE = 225
 var terrain_verts: PackedVector3Array
 
 # Player data

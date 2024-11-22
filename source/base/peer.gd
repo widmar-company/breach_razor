@@ -11,6 +11,7 @@ var clients = []
 # Signals
 signal begin_new_player(id)
 signal begin_new_world()
+signal bootstrap_done(id)
 
 # Begin the mulitplayer.
 func start_multiplayer(t: int):
@@ -44,6 +45,7 @@ func bootstrap_server():
 
 func bootstrap_finish():
 	clients.append(multiplayer.get_unique_id())
+	bootstrap_done.emit(multiplayer.get_unique_id())
 
 #
 # ANY CLIENT TO ANY CLIENT FUNCTIONS ARE HERE

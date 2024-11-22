@@ -1,0 +1,3 @@
+Player sprinting reduces stealth stat
+Player sprinting uses energy 
+Player sprinting allows for increased max speed 
