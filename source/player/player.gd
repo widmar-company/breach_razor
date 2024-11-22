@@ -6,7 +6,7 @@ var player_data: Dictionary
 var SPEED = 8.0
 var MAX_SPEED = 50.0
 const JUMP_VELOCITY = 12.0
-var drag: float = 0.1
+
 
 var m_id
 
@@ -18,7 +18,7 @@ func _process(delta):
 
 func _physics_process(delta: float) -> void:
 	var friction = 0.25
-
+	var drag: float = 0.1
 
 	# Add the gravity.
 	if not is_on_floor():
@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 
 	# Handle jump.
 	if Input.is_action_just_pressed("razor_jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY + (abs(velocity.x) + abs(velocity.z) * 0.005)
+		velocity.y = JUMP_VELOCITY #+ (abs(velocity.x) + abs(velocity.z) * 0.005)
 		velocity.x = velocity.x * 1.50
 		velocity.z = velocity.z * 1.50
 
@@ -37,15 +37,12 @@ func _physics_process(delta: float) -> void:
 		magnitude = SPEED * 1.5
 	if Input.is_action_pressed("razor_crouch"):
 		if is_on_floor():
-			friction = drag + 0.05
 			magnitude = (SPEED / 4)
-			if abs(velocity.x) + abs(velocity.z) > 10 and is_on_floor():
+			if abs(velocity.x) + abs(velocity.z) > 16 and get_real_velocity().y < 0:
 				magnitude = SPEED * 4
 
-	if abs(velocity.x) > 5 or abs(velocity.z):
-		drag = clampf(drag - (abs(velocity.x + velocity.z) / 10000), 0.01, 1)
-		friction = friction / 4
-
+	if abs(velocity.x) + abs(velocity.z) > 16:
+		drag = 0.01
 	else:
 		drag = lerpf(drag, 0.1, 0.01)
 
@@ -64,8 +61,8 @@ func _physics_process(delta: float) -> void:
 			velocity.z = lerpf(velocity.z, direction.z * magnitude, drag)
 	else:
 		if is_on_floor():
-			velocity.x = lerpf(velocity.x, 0.0, friction)
-			velocity.z = lerpf(velocity.z, 0.0, friction)
+			velocity.x = move_toward(velocity.x, 0.0, SPEED)
+			velocity.z = move_toward(velocity.z, 0.0, SPEED)
 		else:
 			velocity.x = lerpf(velocity.x, 0.0, drag)
 			velocity.z = lerpf(velocity.z, 0.0, drag)
