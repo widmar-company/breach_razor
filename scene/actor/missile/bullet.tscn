@@ -5,9 +5,11 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_p4trk"]
 radius = 0.1
 
-[node name="Bullet" type="Area3D"]
+[node name="Bullet" type="Area3D" node_paths=PackedStringArray("collider")]
 script = ExtResource("1_ngy05")
+damage_type = 0
 damage = 5
+collider = NodePath("CollisionShape3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_p4trk")

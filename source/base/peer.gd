@@ -13,6 +13,9 @@ signal begin_new_player(id)
 signal begin_new_world()
 signal bootstrap_done(id)
 
+signal spawn_missile(m)
+signal spawn_actor(a)
+
 # Begin the mulitplayer.
 func start_multiplayer(t: int):
 	type = t
@@ -72,6 +75,11 @@ func client_recieves_player(id):
 	if id != multiplayer.get_unique_id():
 		begin_new_player.emit(id)
 	print("We are telling the world to spawn a player.")
+# As a client, recieve a missile.
+@rpc("authority", "call_local", "unreliable")
+func client_recieves_missile(m):
+	
+	
 
 #
 # CLIENT TO SERVER ENET SIGNALS ARE HERE

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq15xcu8pk3rw"]
+
+[ext_resource type="Script" path="res://source/class/firearm.gd" id="1_dbnn1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_juq7l"]
+size = Vector3(0.25, 0.25, 0.45)
+
+[node name="BeamEmitter" type="Node3D"]
+script = ExtResource("1_dbnn1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_juq7l")
