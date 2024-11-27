@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 
 	if abs(velocity.x) + abs(velocity.z) > SPEED * 3:
 		drag = 0.01
-		friction = 0.01
+		friction = 0.05
 		magnitude = SPEED * 3
 	#else:
 	#	drag = lerpf(drag, 0.1, 0.01)
@@ -77,6 +77,14 @@ func _physics_process(delta: float) -> void:
 			velocity.x = lerpf(velocity.x, 0.0, drag)
 			velocity.z = lerpf(velocity.z, 0.0, drag)
 	
+	if Input.is_action_pressed("razor_aim"):
+		$Camera3D/Holder.position = Vector3(move_toward($Camera3D/Holder.position.x, holder_aim.x, 0.025), move_toward($Camera3D/Holder.position.y, holder_aim.y, 0.025), move_toward($Camera3D/Holder.position.z, holder_aim.z, 0.025))
+
+		#$Camera3D.fov = fov_aim
+	if Input.is_action_just_released("razor_aim"):
+		$Camera3D/Holder.position = holder_hip
+		$Camera3D.fov = fov_nrm
+
 	#move_and_collide(velocity)
 	move_and_slide()
 	
@@ -86,9 +94,3 @@ func _input(event: InputEvent) -> void:
 		$Camera3D.rotate_x(deg_to_rad(event.relative.y * 0.1 * -1))
 		
 	
-	if Input.is_action_pressed("razor_aim"):
-		$Camera3D/Holder.position = holder_aim
-		$Camera3D.fov = fov_aim
-	if Input.is_action_just_released("razor_aim"):
-		$Camera3D/Holder.position = holder_hip
-		$Camera3D.fov = fov_nrm

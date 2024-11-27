@@ -75,9 +75,10 @@ func client_recieves_player(id):
 	if id != multiplayer.get_unique_id():
 		begin_new_player.emit(id)
 	print("We are telling the world to spawn a player.")
+	
 # As a client, recieve a missile.
-@rpc("authority", "call_local", "unreliable")
-func client_recieves_missile(m):
+#@rpc("authority", "call_local", "unreliable")
+#func client_recieves_missile(m):
 	
 	
 
