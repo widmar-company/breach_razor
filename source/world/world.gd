@@ -32,3 +32,8 @@ func _spawn_player(id):
 	p.m_id = id
 	p.position = Vector3(randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4), 10, -randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4))
 	$player.add_child(p)
+
+# Spawn a new missile
+func _spawn_missile(m):
+	var n = Missile.new(m)
+	$missile.add_child(n)

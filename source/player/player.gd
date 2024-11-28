@@ -1,10 +1,11 @@
 extends CharacterBody3D
 
+
 # Our own player data that we save
-var player_data: Dictionary
+@export var player_data: Dictionary
 
 const holder_hip = Vector3(0.25, -0.35, -0.5)
-const holder_aim = Vector3(0.0, -0.25, -0.5)
+const holder_aim = Vector3(0.0, -0.25, -0.25)
 
 const fov_nrm = 120
 const fov_aim = 90

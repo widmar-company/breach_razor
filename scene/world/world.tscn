@@ -42,6 +42,8 @@ script = ExtResource("1_do87a")
 
 [node name="player" type="Node" parent="."]
 
+[node name="missile" type="Node" parent="."]
+
 [node name="terrain" type="MeshInstance3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_s2h3f")

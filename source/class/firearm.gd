@@ -18,7 +18,3 @@ var firearm_type
 
 @export
 var mesh: MeshInstance3D
-
-# Please dear god help me 
-@export_category("Pain")
-var something: int

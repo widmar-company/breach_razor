@@ -1,15 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://4pj2ni3ia05j"]
+[gd_scene load_steps=2 format=3 uid="uid://4pj2ni3ia05j"]
 
 [ext_resource type="Script" path="res://source/class/missile.gd" id="1_ngy05"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_p4trk"]
-radius = 0.1
-
-[node name="Bullet" type="Area3D" node_paths=PackedStringArray("collider")]
+[node name="Bullet" type="Area3D"]
 script = ExtResource("1_ngy05")
-damage_type = 0
-damage = 5
-collider = NodePath("CollisionShape3D")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_p4trk")

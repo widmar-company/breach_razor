@@ -77,8 +77,9 @@ func client_recieves_player(id):
 	print("We are telling the world to spawn a player.")
 	
 # As a client, recieve a missile.
-#@rpc("authority", "call_local", "unreliable")
-#func client_recieves_missile(m):
+@rpc("authority", "call_local", "unreliable")
+func client_recieves_missile(m):
+	spawn_missile.emit(m)
 	
 	
 
@@ -96,4 +97,11 @@ func _server_recieved_new_client(id):
 		if c != id and c != 1:
 			print("We are telling client ", id, " to spawn client ", c)
 			client_recieves_player.rpc_id(id, c)
-	
+
+
+# CLIENT TO SERVER RPC FUNCTIONS ARE HERE
+@rpc("any_peer")
+func server_recieved_missile(m):
+	for c in clients:
+		print("We are sending the clients the missile")
+		client_recieves_missile.rpc_id(m, c)
