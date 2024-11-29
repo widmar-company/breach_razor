@@ -14,7 +14,16 @@ var firearm_type
 @export var missiles: Array
 @export var modifications: Array
 
-@export var forward: RayCast3D
+@export var barrel: Node3D
 
 @export
 var mesh: MeshInstance3D
+
+var sel_missile = 0
+
+
+func fire_missile():
+    print("We are shooting a missile with type")
+    var v = (barrel.global_position - global_position).normalized()
+    print(v)
+    

@@ -93,5 +93,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and not Data.mouse_free: 
 		self.rotate_y(deg_to_rad(event.relative.x * 0.1 * -1))
 		$Camera3D.rotate_x(deg_to_rad(event.relative.y * 0.1 * -1))
-		
+
+	#Handle player firing weapon
+	if Input.is_action_pressed("razor_fire"):
+		for n in $Camera3D/Holder.get_children():
+			if n is  Firearm:
+				n.fire_missile()
 	
