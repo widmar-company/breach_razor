@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-
 # Our own player data that we save
 @export var player_data: Dictionary
 
@@ -97,6 +96,6 @@ func _input(event: InputEvent) -> void:
 	#Handle player firing weapon
 	if Input.is_action_pressed("razor_fire"):
 		for n in $Camera3D/Holder.get_children():
-			if n is  Firearm:
+			if n is Firearm:
 				n.fire_missile()
 	

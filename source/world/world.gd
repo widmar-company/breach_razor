@@ -34,6 +34,5 @@ func _spawn_player(id):
 	$player.add_child(p)
 
 # Spawn a new missile
-func _spawn_missile(m):
-	var n = Missile.new()
-	$missile.add_child(n)
+#func _spawn_missile(m):
+#	$missile.add_child(n)

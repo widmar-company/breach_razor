@@ -1,3 +1,3 @@
 extends Area3D
-class_name Missile
+class_name missile
 
