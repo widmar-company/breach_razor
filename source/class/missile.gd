@@ -1,3 +1,3 @@
-extends Area3D
-class_name missile
+extends MeshInstance3D
+class_name Missile
 

@@ -7,7 +7,7 @@ size = Vector3(0.25, 0.25, 0.45)
 
 [node name="BeamEmitter" type="Node3D" node_paths=PackedStringArray("barrel")]
 script = ExtResource("1_dbnn1")
-missiles = [NodePath("")]
+missiles = ["m_bullet"]
 barrel = NodePath("barrel")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

@@ -1,0 +1,97 @@
+[gd_scene load_steps=14 format=3 uid="uid://br52x64bj4hgv"]
+
+[ext_resource type="Texture2D" uid="uid://be5qllte3rhli" path="res://content/world/belfast_sunset_puresky_2k.hdr" id="1_bw725"]
+[ext_resource type="Shader" path="res://content/world/sky/vol_clouds.gdshader" id="2_64d8t"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xggwp"]
+panorama = ExtResource("1_bw725")
+
+[sub_resource type="Sky" id="Sky_ilwy4"]
+sky_material = SubResource("PanoramaSkyMaterial_xggwp")
+
+[sub_resource type="Environment" id="Environment_lpwmq"]
+background_mode = 2
+sky = SubResource("Sky_ilwy4")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 1
+tonemap_exposure = 0.3
+tonemap_white = 16.0
+ssao_enabled = true
+sdfgi_use_occlusion = true
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.589096, 0.589096, 0.589096, 1)
+fog_density = 1.0
+fog_sky_affect = 0.0
+fog_depth_begin = 100.0
+fog_depth_end = 500.0
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0.800491, 0.800491, 0.800491, 1)
+volumetric_fog_length = 100.0
+volumetric_fog_sky_affect = 0.0
+
+[sub_resource type="Gradient" id="Gradient_k8jlu"]
+offsets = PackedFloat32Array(0.256724, 0.657702)
+colors = PackedColorArray(0, 0, 0, 1, 0.973105, 0.973105, 0.973105, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g1c5r"]
+noise_type = 0
+frequency = 0.0416
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_xn7pl"]
+seamless = true
+color_ramp = SubResource("Gradient_k8jlu")
+noise = SubResource("FastNoiseLite_g1c5r")
+
+[sub_resource type="Gradient" id="Gradient_7f26q"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0dflh"]
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_jx1km"]
+color_ramp = SubResource("Gradient_7f26q")
+noise = SubResource("FastNoiseLite_0dflh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_05lej"]
+render_priority = 0
+shader = ExtResource("2_64d8t")
+shader_parameter/cloud_scale = 0.006
+shader_parameter/cloud_threshold = 0.0
+shader_parameter/cloud_threshold_multiplier = 5.0
+shader_parameter/max_steps = 128
+shader_parameter/step_size = 0.4
+shader_parameter/cloud_scroll_speed = 0.022
+shader_parameter/minBounds = Vector3(0, 70, 0)
+shader_parameter/maxBounds = Vector3(1000, 80, -1000)
+shader_parameter/detail_intensity = 100.0
+shader_parameter/detail_scroll_speed = -10.0
+shader_parameter/cloud_scatter = 5.914
+shader_parameter/light_direction = Vector3(0.5, 1, 0.5)
+shader_parameter/cloud_movement_direction = Vector3(1, 0, 0)
+shader_parameter/cloud_movement_speed = 0.01
+shader_parameter/shadow_intensity = 0.75
+shader_parameter/cloud_alpha = 30.0
+shader_parameter/cloud_color = Color(1, 1, 1, 1)
+shader_parameter/cloud_noise_texture = SubResource("NoiseTexture3D_xn7pl")
+shader_parameter/detail_noise_texture = SubResource("NoiseTexture3D_jx1km")
+
+[sub_resource type="BoxMesh" id="BoxMesh_1i84n"]
+material = SubResource("ShaderMaterial_05lej")
+size = Vector3(1000, 10, 1000)
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_lpwmq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0871558, 0.996195, 0, -0.996195, -0.0871558, 0, 124.189, 0)
+light_color = Color(0.992157, 0.984314, 0.827451, 1)
+light_energy = 2.5
+shadow_enabled = true
+directional_shadow_mode = 0
+sky_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 500, 80, -500)
+visible = false
+mesh = SubResource("BoxMesh_1i84n")
+skeleton = NodePath("../DirectionalLight3D")

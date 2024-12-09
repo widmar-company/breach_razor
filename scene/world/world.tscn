@@ -1,33 +1,43 @@
-[gd_scene load_steps=11 format=3 uid="uid://dj137snbpvsrj"]
+[gd_scene load_steps=12 format=3 uid="uid://dj137snbpvsrj"]
 
 [ext_resource type="Script" path="res://source/world/world.gd" id="1_do87a"]
+[ext_resource type="Texture2D" uid="uid://tltvm3yl5on2" path="res://content/world/wild-grass-1024x1024.png" id="2_7uklg"]
 [ext_resource type="Script" path="res://source/world/terrain.gd" id="2_s0vxb"]
-[ext_resource type="Texture2D" uid="uid://r7aykmuhw6j3" path="res://content/world/terrain/coarse_gravel.png" id="2_td46r"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5vg2m"]
+[ext_resource type="Texture2D" uid="uid://c5ls4vda8ojyu" path="res://content/world/terrain/image_norm.jpg" id="3_707s2"]
+[ext_resource type="Texture2D" uid="uid://bn6qjbf01rfkc" path="res://scene/farm_field_puresky_4k.hdr" id="5_rqahd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2h3f"]
-albedo_texture = ExtResource("2_td46r")
-albedo_texture_force_srgb = true
-anisotropy_flowmap = SubResource("CompressedTexture2D_5vg2m")
+albedo_texture = ExtResource("2_7uklg")
+metallic_specular = 0.0
+normal_enabled = true
+heightmap_scale = 0.25
+heightmap_texture = ExtResource("3_707s2")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8soi6"]
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_rsyqs"]
+rayleigh_coefficient = 0.5
+night_sky = ExtResource("5_rqahd")
 
-[sub_resource type="Sky" id="Sky_wjt57"]
-sky_material = SubResource("ShaderMaterial_8soi6")
+[sub_resource type="Sky" id="Sky_45nfm"]
+sky_material = SubResource("PhysicalSkyMaterial_rsyqs")
 
-[sub_resource type="Environment" id="Environment_lpwmq"]
+[sub_resource type="Environment" id="Environment_uawcs"]
 background_mode = 2
-sky = SubResource("Sky_wjt57")
+sky = SubResource("Sky_45nfm")
 ambient_light_source = 3
-tonemap_mode = 3
-sdfgi_use_occlusion = true
+ambient_light_color = Color(0.992157, 0.984314, 0.827451, 1)
+ambient_light_energy = 0.0
+reflected_light_source = 2
+tonemap_mode = 1
+tonemap_exposure = 0.75
+tonemap_white = 16.0
+ssr_enabled = true
 fog_enabled = true
-fog_light_color = Color(0.133333, 0.133333, 0.133333, 1)
-fog_light_energy = 5.0
-fog_density = 0.008
-volumetric_fog_density = 0.1
-volumetric_fog_albedo = Color(0.188235, 0.188235, 0.188235, 1)
+fog_mode = 1
+fog_light_color = Color(0.47, 0.47, 0.47, 1)
+fog_density = 1.0
+fog_sky_affect = 0.1
+fog_depth_begin = 250.0
+fog_depth_end = 500.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4f5ou"]
 frequency = 0.001
@@ -45,21 +55,22 @@ script = ExtResource("1_do87a")
 [node name="missile" type="Node" parent="."]
 
 [node name="terrain" type="MeshInstance3D" parent="."]
-transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_s2h3f")
 cast_shadow = 2
 script = ExtResource("2_s0vxb")
 
 [node name="body" type="StaticBody3D" parent="terrain"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.0871558, 0.996195, 0, -0.996195, -0.0871558, 0, 0, 0)
-light_bake_mode = 1
-shadow_enabled = true
-sky_mode = 1
+[node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uawcs")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_lpwmq")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment2"]
+transform = Transform3D(-0.931425, -0.0372812, -0.362019, -0.270606, -0.594208, 0.757423, -0.243352, 0.803447, 0.543371, 0, 0, 0)
+light_color = Color(0.992157, 0.984314, 0.827451, 1)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false

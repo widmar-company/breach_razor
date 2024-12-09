@@ -4,7 +4,7 @@ func generate_terrain() -> void:
 	
 	var noise = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
-	noise.frequency = 0.025
+	noise.frequency = 0.01
 	noise.seed = OS.get_static_memory_usage()
 	
 	var verts = PackedVector3Array()
@@ -17,7 +17,7 @@ func generate_terrain() -> void:
 	for x in Data.TERRAIN_SIZE:
 		for z in Data.TERRAIN_SIZE:
 			# Get noise data 
-			var diff = 10
+			var diff = 15
 			var n1a = noise.get_noise_2d(x,-z) * diff
 			var n1b = noise.get_noise_2d(x,-z-1) * diff
 			var n1c = noise.get_noise_2d(x+1,-z-1) * diff

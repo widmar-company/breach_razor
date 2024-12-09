@@ -1,7 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bgy0dbdo4ujtg"]
+[gd_scene load_steps=7 format=3 uid="uid://bgy0dbdo4ujtg"]
 
 [ext_resource type="Script" path="res://source/player/player.gd" id="1_k0du0"]
 [ext_resource type="PackedScene" uid="uid://bq15xcu8pk3rw" path="res://scene/actor/item/beam_emitter.tscn" id="2_orw3o"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_uh1ep"]
+auto_exposure_speed = 1.0
+dof_blur_far_enabled = true
+dof_blur_far_distance = 4000.0
+dof_blur_far_transition = 100.0
+dof_blur_amount = 0.01
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jexu4"]
 
@@ -21,6 +28,7 @@ script = ExtResource("1_k0du0")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 keep_aspect = 0
+attributes = SubResource("CameraAttributesPractical_uh1ep")
 fov = 90.0
 
 [node name="Holder" type="Node3D" parent="Camera3D"]
