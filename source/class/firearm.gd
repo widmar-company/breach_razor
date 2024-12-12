@@ -11,7 +11,7 @@ var firearm_type
 @export var missile_reload: int
 @export var missile_spread: int
 @export_category("Nodes")
-@export var missiles: Array
+@export var missile: String
 @export var modifications: Array
 
 @export var barrel: Node3D
@@ -21,9 +21,12 @@ var mesh: MeshInstance3D
 
 var sel_missile = 0
 
+func _ready() -> void:
+	set_multiplayer_authority(multiplayer.get_unique_id())
 
 func fire_missile():
-    print("We are shooting a missile with type")
-    var v = (barrel.global_position - global_position).normalized()
-    print(v)
-    
+	var v = (barrel.global_position - global_position).normalized()
+	var md = {"p": $barrel.global_position, "v": v, "m": missile}
+	Peer.server_recieved_missile.rpc_id(1, md)
+	print(v)
+	

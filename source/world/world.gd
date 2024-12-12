@@ -8,6 +8,7 @@ func _ready() -> void:
 	print("Connecting signals.")
 	Peer.begin_new_player.connect(_spawn_player)
 	Peer.begin_new_world.connect(_new_world)
+	Peer.spawn_missile.connect(_spawn_missile)
 	# When we are created, we are not loaded yet.
 	loaded = false
 	
@@ -23,7 +24,7 @@ func _new_world():
 		$terrain.apply_terrain(Data.terrain_verts)
 	for c in Peer.clients:
 		_spawn_player(c)
-		
+	
 # Spawn a new player
 func _spawn_player(id):
 	print("Spawning a new player")
@@ -34,5 +35,12 @@ func _spawn_player(id):
 	$player.add_child(p)
 
 # Spawn a new missile
-#func _spawn_missile(m):
-#	$missile.add_child(n)
+func _spawn_missile(md):
+	if Data.missile_collection[md["m"]] != null:
+		print("Success, spawning a missile with the stats:\n", md)
+		var n = Data.missile_collection[md["m"]].instantiate()
+		n.position = md["p"]
+		n.vector = md["v"]
+		$missile.add_child(n)
+	else: 
+		print("We failed to spawn a missile of type [", md["m"], "]. Why?")

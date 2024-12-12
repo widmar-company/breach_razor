@@ -77,9 +77,9 @@ func client_recieves_player(id):
 	print("We are telling the world to spawn a player.")
 	
 # As a client, recieve a missile.
-@rpc("authority", "call_local", "unreliable")
-func client_recieves_missile(m):
-	spawn_missile.emit(m)
+@rpc("authority", "call_local")
+func client_recieves_missile(md):
+	spawn_missile.emit(md)
 	
 	
 
@@ -100,8 +100,10 @@ func _server_recieved_new_client(id):
 
 
 # CLIENT TO SERVER RPC FUNCTIONS ARE HERE
-@rpc("any_peer")
-func server_recieved_missile(m):
+@rpc("any_peer", "call_local")
+func server_recieved_missile(md):
+	print("We are: [", multiplayer.get_unique_id(),"], and we recieved a missile send command from: [", multiplayer.get_remote_sender_id(), "]")
 	for c in clients:
-		print("We are sending the clients the missile")
-		client_recieves_missile.rpc_id(m, c)
+		print(c)
+		print("We are sending the clients the missile data")
+		client_recieves_missile.rpc_id(c, md)

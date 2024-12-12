@@ -3,7 +3,7 @@ extends Node
 var mouse_free: bool = true
 
 # Terrain variables
-const TERRAIN_SIZE = 512 #225
+const TERRAIN_SIZE =  128 #512
 var terrain_verts: PackedVector3Array
 
 # Player data
@@ -11,7 +11,7 @@ var player_data: Dictionary
 
 # Missile Collection 
 var missile_collection = {
-	"m_bullet": ResourceLoader.load("res://scene/missile/bullet.tscn")
+	"m_bullet": ResourceLoader.load("res://scene/missile/m_bullet.tscn")
 }
 
 # Called when the node enters the scene tree for the first time.

@@ -7,11 +7,11 @@ size = Vector3(0.25, 0.25, 0.45)
 
 [node name="BeamEmitter" type="Node3D" node_paths=PackedStringArray("barrel")]
 script = ExtResource("1_dbnn1")
-missiles = ["m_bullet"]
+missile = "m_bullet"
 barrel = NodePath("barrel")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_juq7l")
 
 [node name="barrel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)

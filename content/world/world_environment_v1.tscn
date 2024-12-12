@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://br52x64bj4hgv"]
 
-[ext_resource type="Texture2D" uid="uid://be5qllte3rhli" path="res://content/world/belfast_sunset_puresky_2k.hdr" id="1_bw725"]
+[ext_resource type="Texture2D" uid="uid://be5qllte3rhli" path="res://content/world/sky/hdr/belfast_sunset_puresky_2k.hdr" id="1_bw725"]
 [ext_resource type="Shader" path="res://content/world/sky/vol_clouds.gdshader" id="2_64d8t"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xggwp"]
