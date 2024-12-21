@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://dj137snbpvsrj"]
+[gd_scene load_steps=11 format=3 uid="uid://dj137snbpvsrj"]
 
 [ext_resource type="Script" path="res://source/world/world.gd" id="1_do87a"]
 [ext_resource type="Texture2D" uid="uid://tltvm3yl5on2" path="res://content/world/wild-grass-1024x1024.png" id="2_7uklg"]
 [ext_resource type="Script" path="res://source/world/terrain.gd" id="2_s0vxb"]
 [ext_resource type="Texture2D" uid="uid://c5ls4vda8ojyu" path="res://content/world/terrain/image_norm.jpg" id="3_707s2"]
 [ext_resource type="Sky" uid="uid://3e82ftf65t1g" path="res://content/world/sky/sky_version2.tres" id="5_yn1k8"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_q53fn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2h3f"]
 albedo_texture = ExtResource("2_7uklg")
@@ -49,13 +51,17 @@ script = ExtResource("1_do87a")
 
 [node name="missile" type="Node" parent="."]
 
-[node name="terrain" type="MeshInstance3D" parent="."]
+[node name="nav" type="NavigationRegion3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+navigation_mesh = SubResource("NavigationMesh_q53fn")
+
+[node name="terrain" type="MeshInstance3D" parent="nav"]
 material_override = SubResource("StandardMaterial3D_s2h3f")
 cast_shadow = 2
+skeleton = NodePath("../..")
 script = ExtResource("2_s0vxb")
 
-[node name="body" type="StaticBody3D" parent="terrain"]
+[node name="body" type="StaticBody3D" parent="nav/terrain"]
 
 [node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uawcs")

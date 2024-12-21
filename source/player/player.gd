@@ -84,13 +84,13 @@ func _physics_process(delta: float) -> void:
 		$Camera3D/Holder.position = holder_hip
 		$Camera3D.fov = fov_nrm
 		
-	#Handle player firing weapon
-	if Input.is_action_just_pressed("razor_fire") and multiplayer.get_unique_id() == get_multiplayer_authority():
+	# Handle player firing weapon
+	# Why do we need to check if we're the multiplayer auth? This is set in ready(). 
+	if Input.is_action_pressed("razor_fire") and multiplayer.get_unique_id() == get_multiplayer_authority():
 		for n in $Camera3D/Holder.get_children():
 			if n is Firearm:
 				n.fire_missile()
-				print("I am [ ",multiplayer.get_unique_id()," ] and I am shooting.")
-	#move_and_collide(velocity)
+				#print("I am [ ",multiplayer.get_unique_id()," ] and I am shooting.")
 	move_and_slide()
 	
 func _input(event: InputEvent) -> void:

@@ -1,25 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://da4y0n7dy3a73"]
+[gd_scene load_steps=6 format=3 uid="uid://da4y0n7dy3a73"]
 
 [ext_resource type="Script" path="res://source/class/missile.gd" id="1_wenrl"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cvfyk"]
+radius = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_41rqs"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.72549, 0, 1)
+emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_247mf"]
+material = SubResource("StandardMaterial3D_41rqs")
+radius = 0.1
+height = 0.2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_as700"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:is_dead")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="MBullet" type="RigidBody3D"]
 mass = 0.001
 script = ExtResource("1_wenrl")
-speed = 10
+speed = 500
+lifetime = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_cvfyk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("SphereMesh_247mf")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

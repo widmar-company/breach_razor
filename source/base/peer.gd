@@ -102,8 +102,8 @@ func _server_recieved_new_client(id):
 # CLIENT TO SERVER RPC FUNCTIONS ARE HERE
 @rpc("any_peer", "call_local")
 func server_recieved_missile(md):
-	print("We are: [", multiplayer.get_unique_id(),"], and we recieved a missile send command from: [", multiplayer.get_remote_sender_id(), "]")
+	#print("We are: [", multiplayer.get_unique_id(),"], and we recieved a missile send command from: [", multiplayer.get_remote_sender_id(), "]")
 	for c in clients:
-		print(c)
-		print("We are sending the clients the missile data")
+		#print(c)
+		#print("We are sending the clients the missile data")
 		client_recieves_missile.rpc_id(c, md)

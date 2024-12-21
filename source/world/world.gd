@@ -19,9 +19,9 @@ func _process(delta: float) -> void:
 # Create a world
 func _new_world():
 	if Peer.type == Peer.TYPES.SERVER:
-		$terrain.generate_terrain()
+		$nav/terrain.generate_terrain()
 	if Data.terrain_verts:
-		$terrain.apply_terrain(Data.terrain_verts)
+		$nav/terrain.apply_terrain(Data.terrain_verts)
 	for c in Peer.clients:
 		_spawn_player(c)
 	
@@ -37,7 +37,7 @@ func _spawn_player(id):
 # Spawn a new missile
 func _spawn_missile(md):
 	if Data.missile_collection[md["m"]] != null:
-		print("Success, spawning a missile with the stats:\n", md)
+		#print("Success, spawning a missile with the stats:\n", md)
 		var n = Data.missile_collection[md["m"]].instantiate()
 		n.position = md["p"]
 		n.vector = md["v"]

@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://dv2xu5bjyupg5"]
 
-[ext_resource type="FontFile" uid="uid://bps4axlwg1hsu" path="res://content/theme/font/Px437_IBM_BIOS.ttf" id="1_plffd"]
+[ext_resource type="FontFile" uid="uid://ds68viv7f2m2n" path="res://content/theme/font/Px437_IBM_DOS_ISO9.ttf" id="1_1jw3c"]
 
 [resource]
-default_font = ExtResource("1_plffd")
+default_font = ExtResource("1_1jw3c")
 default_font_size = 8

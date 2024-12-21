@@ -9,7 +9,6 @@ func generate_terrain() -> void:
 	
 	var verts = PackedVector3Array()
 
-	
 	var c = 0 
 
 	# Build terrain to specification
@@ -47,16 +46,20 @@ func apply_terrain(verts: PackedVector3Array):
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var c = 0
 	for v in verts:
 		st.set_uv(Vector2(v.x, v.z))
 		st.add_vertex(v)
-	
+		st.add_index(c)
+		c += 1
+
 	st.generate_normals()
 	st.generate_tangents()
 	
 	mesh = st.commit()
 	var cs = CollisionShape3D.new()
 	cs.shape = mesh.create_trimesh_shape()
+
 	#cs.scale = 2
 	$body.add_child(cs)
 	#var cs = mesh.create_convex_shape()
