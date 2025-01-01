@@ -10,6 +10,10 @@ func _input(event: InputEvent) -> void:
 		Data.toggle_mouse_capture()
 		$interface/Menu.visible = !$interface/Menu.visible
 		#$Title.visible = !$Title.visible
+	if Input.is_action_just_pressed("razor_inventory"):
+		Data.toggle_mouse_capture()
+		$interface/Inventory.update()
+		$interface/Inventory.visible = !$interface/Inventory.visible
 
 func preloader():
 	print("Loaded everything.")

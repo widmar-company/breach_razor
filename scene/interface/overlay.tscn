@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtlx5tvfn4ws6"]
+[gd_scene load_steps=3 format=3 uid="uid://dtlx5tvfn4ws6"]
 
 [ext_resource type="Script" path="res://source/interface/overlay.gd" id="1_4od30"]
+[ext_resource type="Texture2D" uid="uid://7jyy45pttc6b" path="res://content/overlay/crosshair.png" id="2_slidn"]
 
 [node name="Overlay" type="Control"]
 layout_mode = 3
@@ -21,3 +22,23 @@ offset_bottom = 39.0
 [node name="pos" type="Label" parent="debug"]
 layout_mode = 2
 text = "this is a test "
+
+[node name="energy" type="Label" parent="debug"]
+layout_mode = 2
+text = "not working"
+
+[node name="crosshair" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_slidn")
+stretch_mode = 3

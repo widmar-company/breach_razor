@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq15xcu8pk3rw"]
+
+[ext_resource type="Script" path="res://source/class/firearm.gd" id="1_dbnn1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_juq7l"]
+size = Vector3(0.25, 0.25, 0.45)
+
+[node name="BeamEmitter" type="Node3D" node_paths=PackedStringArray("barrel")]
+script = ExtResource("1_dbnn1")
+missile_delay = 30
+missile_capacity = 10
+missile_spread = 0.01
+missile = "m_bullet"
+barrel = NodePath("barrel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_juq7l")
+
+[node name="barrel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+volume_db = -24.0
+max_polyphony = 14400

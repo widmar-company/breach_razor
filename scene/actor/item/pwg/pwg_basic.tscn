@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyyd2fupd25h3"]
+
+[ext_resource type="Script" path="res://source/class/pwg.gd" id="1_qc1uf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8san5"]
+top_radius = 0.45
+
+[node name="pwg_basic" type="Node3D" node_paths=PackedStringArray("barrel")]
+script = ExtResource("1_qc1uf")
+barrel = NodePath("barrel")
+
+[node name="segments" type="Node" parent="."]
+
+[node name="barrel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(6.6874e-16, 1.5299e-08, -0.35, 0.35, -1.5299e-08, 0, -1.5299e-08, -0.35, -1.5299e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_8san5")

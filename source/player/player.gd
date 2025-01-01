@@ -14,36 +14,45 @@ const JUMP_VELOCITY = 12.0
 
 var m_id
 
+# Active Variables
+# var has_been_hit
+
 func _ready() -> void:
 	set_multiplayer_authority(m_id)
 	$Camera3D.fov = fov_nrm
 	$Camera3D/Holder.position = holder_hip
-
+	player_data = Data.base_player_data
+	player_data["energy"] = randi_range(0,50)
+	
 func _process(delta):
 	player_data["position"] = position
+	if multiplayer.get_unique_id() == get_multiplayer_authority():
+		Data.player_data = player_data
+	do_status_update() # Update our status every frame
 
 func _physics_process(delta: float) -> void:
 	var friction = 0.25
 	var drag     = 0.01
+	# This is a test of this that we are testing, and other things that need to get tested. Are you testing things?
+	# Why do we need to check if we're the multiplayer auth? This is set in ready(). 
+	if multiplayer.get_unique_id() == get_multiplayer_authority():
+		# Add the gravity.
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		# Handle jump.
+		if Input.is_action_just_pressed("razor_jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY #+ (abs(velocity.x) + abs(velocity.z) * 0.005)
+			velocity.x = velocity.x * 1.50
+			velocity.z = velocity.z * 1.50
 
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+		var magnitude = SPEED
 
-	# Handle jump.
-	if Input.is_action_just_pressed("razor_jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY #+ (abs(velocity.x) + abs(velocity.z) * 0.005)
-		velocity.x = velocity.x * 1.50
-		velocity.z = velocity.z * 1.50
-
-	var magnitude = SPEED
-
-	# Handle specials
-	if Input.is_action_pressed("razor_sprint"):
-		magnitude = SPEED * 1.5
-	if Input.is_action_pressed("razor_crouch"):
-		if is_on_floor():
-			magnitude = (SPEED / 4)
+		# Handle specials
+		if Input.is_action_pressed("razor_sprint"):
+			magnitude = SPEED * 1.5
+		if Input.is_action_pressed("razor_crouch"):
+			if is_on_floor():
+				magnitude = (SPEED / 4)
 
 	#if abs(velocity.x) + abs(velocity.z) > SPEED * 3:
 	#	drag = 0.01
@@ -55,45 +64,59 @@ func _physics_process(delta: float) -> void:
 	#print(drag, " ", friction)
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("razor_strafe_left", "razor_strafe_right", "razor_forward", "razor_backward")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		var input_dir := Input.get_vector("razor_strafe_left", "razor_strafe_right", "razor_forward", "razor_backward")
+		var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
-	if direction and !Data.mouse_free:
-		if is_on_floor():
-			velocity.x = lerpf(velocity.x, direction.x * magnitude, friction)
-			velocity.z = lerpf(velocity.z, direction.z * magnitude, friction)
-		else:
-			velocity.x = lerpf(velocity.x, direction.x * magnitude, drag)
-			velocity.z = lerpf(velocity.z, direction.z * magnitude, drag)
+		if direction and !Data.mouse_free:
+			if is_on_floor():
+				velocity.x = lerpf(velocity.x, direction.x * magnitude, friction)
+				velocity.z = lerpf(velocity.z, direction.z * magnitude, friction)
+			else:
+				velocity.x = lerpf(velocity.x, direction.x * magnitude, drag)
+				velocity.z = lerpf(velocity.z, direction.z * magnitude, drag)
 			#if Input.is_action_just_pressed("razor_jump"):
 			#	velocity.x = direction.x * (abs(velocity.x) + SPEED * 2)
 			#	velocity.z = direction.z * (abs(velocity.z) + SPEED * 2)
-	else:
-		if is_on_floor():
-			velocity.x = move_toward(velocity.x, 0.0, SPEED)
-			velocity.z = move_toward(velocity.z, 0.0, SPEED)
 		else:
-			velocity.x = lerpf(velocity.x, 0.0, drag)
-			velocity.z = lerpf(velocity.z, 0.0, drag)
+			if is_on_floor():
+				velocity.x = move_toward(velocity.x, 0.0, SPEED)
+				velocity.z = move_toward(velocity.z, 0.0, SPEED)
+			else:
+				velocity.x = lerpf(velocity.x, 0.0, drag)
+				velocity.z = lerpf(velocity.z, 0.0, drag)
 	
-	if Input.is_action_pressed("razor_aim"):
-		$Camera3D/Holder.position = Vector3(move_toward($Camera3D/Holder.position.x, holder_aim.x, 0.025), move_toward($Camera3D/Holder.position.y, holder_aim.y, 0.025), move_toward($Camera3D/Holder.position.z, holder_aim.z, 0.025))
+		if Input.is_action_pressed("razor_aim"):
+			$Camera3D/Holder.position = Vector3(move_toward($Camera3D/Holder.position.x, holder_aim.x, 0.025), move_toward($Camera3D/Holder.position.y, holder_aim.y, 0.025), move_toward($Camera3D/Holder.position.z, holder_aim.z, 0.025))
 
 		#$Camera3D.fov = fov_aim
-	if Input.is_action_just_released("razor_aim"):
-		$Camera3D/Holder.position = holder_hip
-		$Camera3D.fov = fov_nrm
+		if Input.is_action_just_released("razor_aim"):
+			$Camera3D/Holder.position = holder_hip
+			$Camera3D.fov = fov_nrm
 		
-	# Handle player firing weapon
-	# Why do we need to check if we're the multiplayer auth? This is set in ready(). 
-	if Input.is_action_pressed("razor_fire") and multiplayer.get_unique_id() == get_multiplayer_authority():
-		for n in $Camera3D/Holder.get_children():
-			if n is Firearm:
-				n.fire_missile()
-				#print("I am [ ",multiplayer.get_unique_id()," ] and I am shooting.")
+		# Handle player using holdable
+		if Input.is_action_pressed("razor_primary"):
+			for n in $Camera3D/Holder.get_children():
+				if n is Holdable:
+					n.primary_action() 
+
+					#print("I am [ ",multiplayer.get_unique_id()," ] and I am shooting.")
+		if Input.is_action_just_pressed("razor_secondary"):
+			for n in $Camera3D/Holder.get_children():
+				if n is Holdable:
+					n.secondary_action()
 	move_and_slide()
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and not Data.mouse_free: 
 		self.rotate_y(deg_to_rad(event.relative.x * 0.1 * -1))
 		$Camera3D.rotate_x(deg_to_rad(event.relative.y * 0.1 * -1))
+
+func _on_projectile_area_body_entered(body: Node3D) -> void:
+	if multiplayer.get_unique_id() == get_multiplayer_authority():
+		var p = body.proj_stats
+		print("We are about to take this much damage: ", p["damage"])
+	body.queue_free()
+
+func do_status_update():
+	#
+	pass

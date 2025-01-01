@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpo22f4nvv1ht"]
+
+[ext_resource type="PackedScene" uid="uid://bq15xcu8pk3rw" path="res://scene/actor/item/gun.tscn" id="1_hvqwf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6pv8b"]
+top_radius = 2.5
+bottom_radius = 5.0
+height = 10.0
+
+[node name="en_Silo" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_6pv8b")
+
+[node name="turret" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.64143, 0)
+
+[node name="BeamEmitter" parent="turret" instance=ExtResource("1_hvqwf")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

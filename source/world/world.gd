@@ -8,7 +8,8 @@ func _ready() -> void:
 	print("Connecting signals.")
 	Peer.begin_new_player.connect(_spawn_player)
 	Peer.begin_new_world.connect(_new_world)
-	Peer.spawn_missile.connect(_spawn_missile)
+	Peer.spawn_projectile.connect(_spawn_projectile)
+	Peer.delete_player.connect(_delete_player)
 	# When we are created, we are not loaded yet.
 	loaded = false
 	
@@ -31,16 +32,14 @@ func _spawn_player(id):
 	var p = ResourceLoader.load("res://scene/player/player.tscn").instantiate()
 	p.name = str(id)
 	p.m_id = id
-	p.position = Vector3(randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4), 10, -randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4))
+	p.position = Vector3(randi_range(0, Data.TERRAIN_SIZE * $nav.scale.x), 10, randi_range(0, -1 * Data.TERRAIN_SIZE * $nav.scale.z))#Vector3(randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4), 10, -randi_range(Data.TERRAIN_SIZE/2 - Data.TERRAIN_SIZE/4, Data.TERRAIN_SIZE/2 + Data.TERRAIN_SIZE/4))
 	$player.add_child(p)
 
-# Spawn a new missile
-func _spawn_missile(md):
-	if Data.missile_collection[md["m"]] != null:
-		#print("Success, spawning a missile with the stats:\n", md)
-		var n = Data.missile_collection[md["m"]].instantiate()
-		n.position = md["p"]
-		n.vector = md["v"]
-		$missile.add_child(n)
-	else: 
-		print("We failed to spawn a missile of type [", md["m"], "]. Why?")
+func _delete_player(id):
+	print("tried to delete a player...")
+	#$player.get_node(str(id)).queue_free()
+
+func _spawn_projectile(proj):
+	var n = ResourceLoader.load("res://scene/world/particle/projectile.tscn").instantiate()
+	n.proj_stats = proj
+	$particle.add_child(n)

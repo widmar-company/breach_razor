@@ -49,7 +49,7 @@ script = ExtResource("1_do87a")
 
 [node name="player" type="Node" parent="."]
 
-[node name="missile" type="Node" parent="."]
+[node name="particle" type="Node" parent="."]
 
 [node name="nav" type="NavigationRegion3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)

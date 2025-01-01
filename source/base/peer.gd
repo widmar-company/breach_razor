@@ -13,8 +13,10 @@ signal begin_new_player(id)
 signal begin_new_world()
 signal bootstrap_done(id)
 
-signal spawn_missile(m)
 signal spawn_actor(a)
+signal spawn_projectile(p)
+
+signal delete_player(id)
 
 # Begin the mulitplayer.
 func start_multiplayer(t: int):
@@ -30,6 +32,7 @@ func bootstrap_client():
 	peer.create_client(address, DEFAULT_PORT)
 	multiplayer.multiplayer_peer = peer
 	peer.peer_connected.connect(_client_recieved_new_client)
+	#peer.peer_disconnected.connect(_client_disconnected)
 	bootstrap_finish()
 
 	print("Client running...")
@@ -40,6 +43,7 @@ func bootstrap_server():
 	peer.create_server(DEFAULT_PORT, 16)
 	multiplayer.multiplayer_peer = peer
 	peer.peer_connected.connect(_server_recieved_new_client)
+	#peer.peer_disconnected.connect(_client_disconnected)
 	bootstrap_finish()
 
 	print("Server running...")
@@ -49,6 +53,7 @@ func bootstrap_server():
 func bootstrap_finish():
 	clients.append(multiplayer.get_unique_id())
 	bootstrap_done.emit(multiplayer.get_unique_id())
+	
 
 #
 # ANY CLIENT TO ANY CLIENT FUNCTIONS ARE HERE
@@ -56,7 +61,16 @@ func bootstrap_finish():
 
 func _client_recieved_new_client(id):
 	print("We are client [", multiplayer.get_unique_id(), "], and we just got a new client with id: ", id)
-	clients.append(id)
+	clients.push_back(id)
+	
+
+func _client_disconnected(id):
+	clients.find(id)
+	delete_player.emit(id)
+
+func client_disconnect():
+	multiplayer.multiplayer_peer = null
+	
 
 #
 # SERVER TO CLIENT FUNCTIONS ARE HERE
@@ -74,12 +88,11 @@ func client_recieves_world(t):
 func client_recieves_player(id):
 	if id != multiplayer.get_unique_id():
 		begin_new_player.emit(id)
-	print("We are telling the world to spawn a player.")
-	
-# As a client, recieve a missile.
+	print("We are telling the world to spawn player: ", id)
+
 @rpc("authority", "call_local")
-func client_recieves_missile(md):
-	spawn_missile.emit(md)
+func client_recieves_projectile(proj):
+	spawn_projectile.emit(proj)
 	
 	
 
@@ -100,10 +113,8 @@ func _server_recieved_new_client(id):
 
 
 # CLIENT TO SERVER RPC FUNCTIONS ARE HERE
+
 @rpc("any_peer", "call_local")
-func server_recieved_missile(md):
-	#print("We are: [", multiplayer.get_unique_id(),"], and we recieved a missile send command from: [", multiplayer.get_remote_sender_id(), "]")
+func server_recieved_projectile(proj):
 	for c in clients:
-		#print(c)
-		#print("We are sending the clients the missile data")
-		client_recieves_missile.rpc_id(c, md)
+		client_recieves_projectile.rpc_id(c, proj)

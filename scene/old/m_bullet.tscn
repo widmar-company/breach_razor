@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://da4y0n7dy3a73"]
+
+[ext_resource type="Script" path="res://source/class/missile.gd" id="1_r48fp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q5wsu"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_41rqs"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.72549, 0, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_247mf"]
+material = SubResource("StandardMaterial3D_41rqs")
+radius = 0.1
+height = 0.2
+
+[node name="m_bullet" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 0
+collision_priority = 10.0
+mass = 0.001
+gravity_scale = 0.01
+script = ExtResource("1_r48fp")
+speed = 240
+lifetime = 1
+damage = 5
+
+[node name="m_bullet" type="Node" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_q5wsu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("SphereMesh_247mf")

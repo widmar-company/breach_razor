@@ -9,11 +9,16 @@ var terrain_verts: PackedVector3Array
 # Player data
 var player_data: Dictionary
 
-# Missile Collection 
-var missile_collection = {
-	"m_bullet": ResourceLoader.load("res://scene/missile/m_bullet.tscn")
+var base_player_data = {
+	"name": "empty",
+	"health": 100,
+	"armour": 0,
+	"energy": 100,
+	"agility": 10,
+	"strength": 10,
+	"dexterity": 10,
+	"wisdom": 10,
 }
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
